@@ -210,7 +210,7 @@ class AbstractBaseCollabFilterSGD(object):
                     for key, arr in grad_dict.items():
                         norm = np.mean(np.abs(arr))
                         self.trace_norm_per_param[key].append(norm)
-                        cur_norm_str = "grad_wrt_%s %11.5f" % (key, norm)
+                        cur_norm_str = "grad_wrt_%s %11.8f" % (key, norm)
                         avg_grad_norm_str_list.append(cur_norm_str)
                     avg_grad_norm_str = ' | '.join(avg_grad_norm_str_list)
 

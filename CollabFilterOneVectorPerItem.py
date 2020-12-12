@@ -55,10 +55,10 @@ class CollabFilterOneVectorPerItem(AbstractBaseCollabFilterSGD):
         # TIP: use self.n_factors to access number of hidden dimensions
         self.param_dict = dict(
             mu=ag_np.ones(1),
-            b_per_user=ag_np.ones(1), # FIX dimensionality
-            c_per_item=ag_np.ones(1), # FIX dimensionality
-            U=0.001 * random_state.randn(1), # FIX dimensionality
-            V=0.001 * random_state.randn(1), # FIX dimensionality
+            b_per_user=ag_np.ones(n_users),
+            c_per_item=ag_np.ones(n_items),
+            U=0.001 * random_state.randn(n_users, self.n_factors),
+            V=0.001 * random_state.randn(n_items, self.n_factors),
             )
 
 
@@ -82,7 +82,15 @@ class CollabFilterOneVectorPerItem(AbstractBaseCollabFilterSGD):
         '''
         # TODO: Update with actual prediction logic
         N = user_id_N.size
-        yhat_N = ag_np.ones(N)
+        if b_per_user is None:
+            b_per_user = self.param_dict['b_per_user']
+        if c_per_item is None:
+            c_per_item = self.param_dict['c_per_item']
+        if U is None:
+            U = self.param_dict['U']
+        if V is None:
+            V = self.param_dict['V']
+        yhat_N = mu[0] + b_per_user[user_id_N] + c_per_item[item_id_N] + ag_np.sum(U[user_id_N]*V[user_id_N], 1)
         return yhat_N
 
 
@@ -103,7 +111,9 @@ class CollabFilterOneVectorPerItem(AbstractBaseCollabFilterSGD):
         # TIP: use self.alpha to access regularization strength
         y_N = data_tuple[2]
         yhat_N = self.predict(data_tuple[0], data_tuple[1], **param_dict)
-        loss_total = 0.0
+        v_pen = ag_np.sum(ag_np.square(self.param_dict['V']))
+        u_pen = ag_np.sum(ag_np.square(self.param_dict['U']))
+        loss_total = self.alpha * (v_pen+u_pen) + ag_np.sum(ag_np.square(y_N-yhat_N))
         return loss_total    
 
 

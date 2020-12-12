@@ -47,8 +47,8 @@ class CollabFilterOneScalarPerItem(AbstractBaseCollabFilterSGD):
         '''
         random_state = self.random_state # inherited RandomState object
 
-        # TODO initialize all parameters to all zero arrays
-        # TODO fix the lines below to have right dimensionality
+        # initialize all parameters to all zero arrays
+        # fix the lines below to have right dimensionality
         self.param_dict = dict(
             mu=ag_np.zeros(1),
             b_per_user=ag_np.zeros(n_users),
