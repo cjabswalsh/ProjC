@@ -111,8 +111,8 @@ class CollabFilterOneVectorPerItem(AbstractBaseCollabFilterSGD):
         # TIP: use self.alpha to access regularization strength
         y_N = data_tuple[2]
         yhat_N = self.predict(data_tuple[0], data_tuple[1], **param_dict)
-        v_pen = ag_np.sum(ag_np.square(self.param_dict['V']))
-        u_pen = ag_np.sum(ag_np.square(self.param_dict['U']))
+        v_pen = ag_np.sum(ag_np.square(param_dict['V']))
+        u_pen = ag_np.sum(ag_np.square(param_dict['U']))
         loss_total = self.alpha * (v_pen+u_pen) + ag_np.sum(ag_np.square(y_N-yhat_N))
         return loss_total    
 
