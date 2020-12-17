@@ -90,7 +90,7 @@ class CollabFilterOneVectorPerItem(AbstractBaseCollabFilterSGD):
             U = self.param_dict['U']
         if V is None:
             V = self.param_dict['V']
-        yhat_N = mu[0] + b_per_user[user_id_N] + c_per_item[item_id_N] + ag_np.sum(U[user_id_N]*V[user_id_N], 1)
+        yhat_N = mu[0] + b_per_user[user_id_N] + c_per_item[item_id_N] + ag_np.sum(U[user_id_N]*V[item_id_N], 1)
         return yhat_N
 
 
